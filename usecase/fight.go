@@ -58,19 +58,19 @@ func (fight *FightUsecase) score(movements, hits []string, position int) {
 
 func (fight *FightUsecase) round(movement, hit string) string {
 	speech := helpers.TranformPlayerToName(&fight.Figth.Turn) + " "
-	movementCombo := helpers.GetString(movement, hit, &fight.Figth.Turn)
+	comboType, movementCombo := helpers.GetString(movement, hit, &fight.Figth.Turn)
 
-	switch movementCombo {
-	case "DSDP":
+	switch comboType {
+	case helpers.COMBO_PLAYER_1_1:
 		speech += domain.COMBO_TALADOKEN
 		fight.Figth.PlayerTwo.Score -= domain.MAX_HIT
-	case "SDK":
+	case helpers.COMBO_PLAYER_1_2:
 		speech += domain.COMBO_REMUYUKEN
 		fight.Figth.PlayerTwo.Score -= domain.MIDDLE_HIT
-	case "SAK":
+	case helpers.COMBO_PLAYER_2_1:
 		speech += domain.COMBO_REMUYUKEN
 		fight.Figth.PlayerOne.Score -= domain.MAX_HIT
-	case "ASAP":
+	case helpers.COMBO_PLAYER_2_2:
 		speech += domain.COMBO_TALADOKEN
 		fight.Figth.PlayerOne.Score -= domain.MIDDLE_HIT
 	default:

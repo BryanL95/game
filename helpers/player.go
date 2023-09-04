@@ -6,7 +6,20 @@ import (
 	"github.com/BryanL95/game/domain"
 )
 
+const (
+	COMBO_PLAYER_1_1 = 13
+	COMBO_PLAYER_1_2 = 12
+	COMBO_PLAYER_2_1 = 23
+	COMBO_PLAYER_2_2 = 22
+)
+
 var name = map[int]string{1: "Tonyn", 2: "Arnaldor"}
+var comboType = map[string]int{
+	"DSDP": COMBO_PLAYER_1_1,
+	"SDK":  COMBO_PLAYER_1_2,
+	"SAK":  COMBO_PLAYER_2_1,
+	"ASAP": COMBO_PLAYER_2_2,
+}
 
 type CountPlayerCombo struct {
 	PlayerOne []int
@@ -52,15 +65,16 @@ func (s *CountPlayerCombo) HowStart() int {
 	return counter
 }
 
-func GetString(stringOne, stringTwo string, playerTurn *int) string {
+func GetString(stringOne, stringTwo string, playerTurn *int) (int, string) {
 	stringOne = clearDeniendMovement(stringOne, playerTurn)
 	reponse := stringOne + stringTwo
+	typeCombo := 0
 	if len(stringOne) > 2 {
-		reponse = stringOne[len(stringOne)-3:] + stringTwo
+		typeCombo = comboType[stringOne[len(stringOne)-3:]+stringTwo]
 	} else if len(stringOne) == 2 {
-		reponse = stringOne[len(stringOne)-2:] + stringTwo
+		typeCombo = comboType[stringOne[len(stringOne)-2:]+stringTwo]
 	}
-	return reponse
+	return typeCombo, reponse
 }
 
 func TranformPlayerToName(player *int) string {
